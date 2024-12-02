@@ -1,6 +1,5 @@
 package form_utama;
 
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +16,10 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import com.raven.chart.ModelChart;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.File;
+import java.io.IOException;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -33,11 +36,17 @@ public class FormLaporan extends javax.swing.JPanel {
     /**
      * Creates new form FormLaporan
      */
-    public FormLaporan() {
+    public FormLaporan() throws FontFormatException, IOException {
         initComponents();
+
         setOpaque(false);
-        panel_utama.setBackground(new Color(0, 0, 0, 0));
-        scroll.setBackground(new Color(0, 0, 0, 0));
+        File fontFile = new File("src/fonts/Kanit-SemiBold.ttf"); // Sesuaikan path
+        Font customFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(20f); // Ukuran 24
+        jLabel3.setFont(customFont);
+        jLabel4.setFont(customFont);
+        jLabel5.setFont(customFont);
+        panel_utama.setBackground(new Color(255, 255, 255, 0));
+        scroll.setBackground(new Color(255, 255, 255, 0));
         //getContentPane().setBackground(new Color(250, 250, 250));
         chart.addLegend("Pengeluaran", new Color(245, 189, 135));
         chart.addLegend("Pendapatan Kotor", new Color(135, 189, 245));
@@ -49,7 +58,7 @@ public class FormLaporan extends javax.swing.JPanel {
             Connection konek = new Config().ConfigDB();
             java.sql.PreparedStatement pst = konek.prepareStatement(sql);
             java.sql.ResultSet rs = pst.executeQuery(sql);
-            
+
             while (rs.next()) {
                 String hari = rs.getString("hari");
                 double pengeluaran = rs.getDouble("pengeluaran");
@@ -205,6 +214,7 @@ public class FormLaporan extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         panel_kotor = new form_utama.panelcustom();
         jLabel4 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -216,6 +226,8 @@ public class FormLaporan extends javax.swing.JPanel {
         jPanel1.setMinimumSize(new java.awt.Dimension(990, 770));
         jPanel1.setPreferredSize(new java.awt.Dimension(990, 770));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        scroll.setBorder(null);
 
         panel_utama.setBackground(new java.awt.Color(255, 255, 255));
         panel_utama.setRoundBottomLeft(15);
@@ -297,13 +309,14 @@ public class FormLaporan extends javax.swing.JPanel {
         panel_utama.add(panelcustom2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 920, 830));
 
         panel_pengeluaran.setBackground(new java.awt.Color(245, 189, 135));
-        panel_pengeluaran.setRoundBottomLeft(15);
-        panel_pengeluaran.setRoundBottomRight(15);
-        panel_pengeluaran.setRoundTopLeft(15);
-        panel_pengeluaran.setRoundTopRight(15);
+        panel_pengeluaran.setRoundBottomLeft(65);
+        panel_pengeluaran.setRoundBottomRight(65);
+        panel_pengeluaran.setRoundTopLeft(65);
+        panel_pengeluaran.setRoundTopRight(65);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Pengeluran");
 
         javax.swing.GroupLayout panel_pengeluaranLayout = new javax.swing.GroupLayout(panel_pengeluaran);
@@ -311,9 +324,9 @@ public class FormLaporan extends javax.swing.JPanel {
         panel_pengeluaranLayout.setHorizontalGroup(
             panel_pengeluaranLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_pengeluaranLayout.createSequentialGroup()
-                .addGap(81, 81, 81)
-                .addComponent(jLabel3)
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addGap(15, 15, 15)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         panel_pengeluaranLayout.setVerticalGroup(
             panel_pengeluaranLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -337,13 +350,14 @@ public class FormLaporan extends javax.swing.JPanel {
 
         panel_bersih.setBackground(new java.awt.Color(189, 135, 245));
         panel_bersih.setPreferredSize(new java.awt.Dimension(240, 120));
-        panel_bersih.setRoundBottomLeft(15);
-        panel_bersih.setRoundBottomRight(15);
-        panel_bersih.setRoundTopLeft(15);
-        panel_bersih.setRoundTopRight(15);
+        panel_bersih.setRoundBottomLeft(65);
+        panel_bersih.setRoundBottomRight(65);
+        panel_bersih.setRoundTopLeft(65);
+        panel_bersih.setRoundTopRight(65);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Pendapatan Bersih");
 
         javax.swing.GroupLayout panel_bersihLayout = new javax.swing.GroupLayout(panel_bersih);
@@ -351,9 +365,9 @@ public class FormLaporan extends javax.swing.JPanel {
         panel_bersihLayout.setHorizontalGroup(
             panel_bersihLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_bersihLayout.createSequentialGroup()
-                .addContainerGap(57, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addGap(55, 55, 55))
+                .addContainerGap(17, Short.MAX_VALUE)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
         );
         panel_bersihLayout.setVerticalGroup(
             panel_bersihLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -367,13 +381,14 @@ public class FormLaporan extends javax.swing.JPanel {
 
         panel_kotor.setBackground(new java.awt.Color(135, 189, 245));
         panel_kotor.setPreferredSize(new java.awt.Dimension(240, 120));
-        panel_kotor.setRoundBottomLeft(15);
-        panel_kotor.setRoundBottomRight(15);
-        panel_kotor.setRoundTopLeft(15);
-        panel_kotor.setRoundTopRight(15);
+        panel_kotor.setRoundBottomLeft(65);
+        panel_kotor.setRoundBottomRight(65);
+        panel_kotor.setRoundTopLeft(65);
+        panel_kotor.setRoundTopRight(65);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Pendapatan Kotor");
 
         javax.swing.GroupLayout panel_kotorLayout = new javax.swing.GroupLayout(panel_kotor);
@@ -381,9 +396,9 @@ public class FormLaporan extends javax.swing.JPanel {
         panel_kotorLayout.setHorizontalGroup(
             panel_kotorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_kotorLayout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addComponent(jLabel4)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addGap(17, 17, 17)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         panel_kotorLayout.setVerticalGroup(
             panel_kotorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -394,6 +409,9 @@ public class FormLaporan extends javax.swing.JPanel {
         );
 
         panel_utama.add(panel_kotor, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 160, -1, -1));
+
+        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/batik azure.png"))); // NOI18N
+        panel_utama.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 920, 560));
 
         scroll.setViewportView(panel_utama);
 
@@ -423,6 +441,7 @@ public class FormLaporan extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

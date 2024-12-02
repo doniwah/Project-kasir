@@ -1,11 +1,12 @@
 package form_utama;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -19,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
  * @author acer
  */
 public class Penjualan extends javax.swing.JPanel {
+
     private String n;
     private DefaultTableModel model = null;
     //private Connection koneksi = (Connection) Config.ConfigDB();
@@ -28,11 +30,11 @@ public class Penjualan extends javax.swing.JPanel {
     public int harga, jumlahBeli, totalBayar, uangBayar, kembalian;
     public String namaKasir, tanggal, namaMenu, kdMenu, kdUser;
 
- 
     public Penjualan(String ia) {
         initComponents();
         n = ia;
-        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        jTextField1.setText(LocalDate.now().format(formatter));
         TransaksiJual transaksi = new TransaksiJual();
         transaksi.refresComboMenu();
         transaksi.refresComboKasir();
@@ -52,7 +54,7 @@ public class Penjualan extends javax.swing.JPanel {
                 getKdUser();
 
                 // Validasi tanggal
-                Date date = text_tanggal.getDate();
+                String date = jTextField1.getText();
                 if (date == null) {
                     throw new Exception("Pilih tanggal terlebih dahulu");
                 }
@@ -120,10 +122,6 @@ public class Penjualan extends javax.swing.JPanel {
                     throw new Exception("Masukkan angka yang valid untuk pembayaran");
                 }
 
-                if (text_total.getText().isEmpty()) {
-                    throw new Exception("Total pembayaran belum dihitung");
-                }
-
                 int total = Integer.parseInt(text_total.getText());
                 // Hitung kembalian
                 kembalian = uangBayar - total;
@@ -135,6 +133,10 @@ public class Penjualan extends javax.swing.JPanel {
 
                 // Tampilkan kembalian
                 text_kembalian.setText("" + kembalian);
+
+                if (text_total.getText().isEmpty()) {
+                    throw new Exception("Total pembayaran belum dihitung");
+                }
 
                 System.out.println("Jumlah beli saat proses bayar: " + jumlahBeli);
                 System.out.println("Total bayar saat proses bayar: " + totalBayar);
@@ -247,7 +249,7 @@ public class Penjualan extends javax.swing.JPanel {
 
             try {
                 // Ambil tanggal dari komponen input
-                Date date = text_tanggal.getDate();
+                String date = jTextField1.getText();
                 if (date == null) {
                     JOptionPane.showMessageDialog(null, "Tanggal belum dipilih. Silakan pilih tanggal terlebih dahulu.");
                     return; // Batalkan proses
@@ -305,7 +307,7 @@ public class Penjualan extends javax.swing.JPanel {
         text_total.setText("");
         text_kembalian.setText("");
         text_menu.setSelectedIndex(0);
-        text_tanggal.setDate(null);
+        jTextField1.setText("");
     }
 
     private void refresTable() {
@@ -335,7 +337,7 @@ public class Penjualan extends javax.swing.JPanel {
                 text_total.setText("");
                 text_kembalian.setText("");
                 text_menu.setSelectedIndex(0);
-                text_tanggal.setDate(null);
+                jTextField1.setText("");
             }
             konek.close();
         } catch (Exception e) {
@@ -358,13 +360,11 @@ public class Penjualan extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         text_menu = new javax.swing.JComboBox<>();
-        text_tanggal = new com.toedter.calendar.JDateChooser();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         text_jumlah = new javax.swing.JTextField();
         text_total = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
         text_bayar = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         text_kembalian = new javax.swing.JTextField();
@@ -374,6 +374,7 @@ public class Penjualan extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         table_transaksi = new javax.swing.JTable();
         text_kasir = new javax.swing.JTextField();
+        jTextField1 = new javax.swing.JTextField();
 
         setLayout(new java.awt.CardLayout());
 
@@ -400,7 +401,6 @@ public class Penjualan extends javax.swing.JPanel {
 
         text_menu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         panel_utama.add(text_menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 227, 40));
-        panel_utama.add(text_tanggal, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 227, 40));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Tanggal");
@@ -409,6 +409,17 @@ public class Penjualan extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Jumlah");
         panel_utama.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 200, -1, -1));
+
+        text_jumlah.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                text_jumlahMouseEntered(evt);
+            }
+        });
+        text_jumlah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                text_jumlahActionPerformed(evt);
+            }
+        });
         panel_utama.add(text_jumlah, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 230, 218, 40));
 
         text_total.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
@@ -419,17 +430,12 @@ public class Penjualan extends javax.swing.JPanel {
         jLabel5.setText("Nama Kasir");
         panel_utama.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 100, -1, -1));
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(164, 192, 239));
-        jButton3.setText("Hitung");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        text_bayar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        text_bayar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                text_bayarActionPerformed(evt);
             }
         });
-        panel_utama.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 230, -1, 40));
-
-        text_bayar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         panel_utama.add(text_bayar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 640, 163, 52));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -483,13 +489,12 @@ public class Penjualan extends javax.swing.JPanel {
         text_kasir.setEnabled(false);
         panel_utama.add(text_kasir, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 130, 220, 40));
 
+        jTextField1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jTextField1.setEnabled(false);
+        panel_utama.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 230, 40));
+
         add(panel_utama, "card2");
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        TransaksiJual transaksi = new TransaksiJual();
-        transaksi.hitungTotal();
-    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         TransaksiJual transaksi = new TransaksiJual();
@@ -505,15 +510,36 @@ public class Penjualan extends javax.swing.JPanel {
             text_total.setText("");
             text_kembalian.setText("");
             text_menu.setSelectedIndex(0);
-            text_tanggal.setDate(null);
+            jTextField1.setText("");
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void text_jumlahMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_text_jumlahMouseEntered
+
+    }//GEN-LAST:event_text_jumlahMouseEntered
+
+    private void text_jumlahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_jumlahActionPerformed
+        TransaksiJual transaksi = new TransaksiJual();
+        transaksi.hitungTotal();
+    }//GEN-LAST:event_text_jumlahActionPerformed
+
+    private void text_bayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_bayarActionPerformed
+
+        int total = Integer.parseInt(text_total.getText());
+        int bayar = Integer.parseInt(text_bayar.getText());
+        // Hitung kembalian
+        kembalian = bayar - total;
+
+        // Tampilkan kembalian
+        text_kembalian.setText("" + kembalian);
+
+
+    }//GEN-LAST:event_text_bayarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
@@ -524,6 +550,7 @@ public class Penjualan extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel panel_utama;
     private javax.swing.JTable table_transaksi;
     private javax.swing.JTextField text_bayar;
@@ -531,7 +558,6 @@ public class Penjualan extends javax.swing.JPanel {
     private javax.swing.JTextField text_kasir;
     private javax.swing.JTextField text_kembalian;
     private javax.swing.JComboBox<String> text_menu;
-    private com.toedter.calendar.JDateChooser text_tanggal;
     private javax.swing.JTextField text_total;
     // End of variables declaration//GEN-END:variables
 }

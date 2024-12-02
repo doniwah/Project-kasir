@@ -16,12 +16,14 @@ import javax.swing.Timer;
  * @author acer
  */
 public class NotifTambahMenu extends javax.swing.JFrame {
+
     private Timer timer;
     private int targetY;
     private int currentY;
     private int currentX;
     private int targetX;
     private int speed = 10;
+
     /**
      * Creates new form NotifTambahMenu
      */
@@ -29,7 +31,8 @@ public class NotifTambahMenu extends javax.swing.JFrame {
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
     }
- public void showSlideUp() {
+
+    public void showSlideUp() {
         setupAnimation("UP");
         setVisible(true);
         timer.start();
@@ -174,9 +177,14 @@ public class NotifTambahMenu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    String a;
+    String b;
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
-        
+        form_utama.FormMenu menu = new form_utama.FormMenu(a, b);
+        menu.setVisible(false);
+        menu.setVisible(true);
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

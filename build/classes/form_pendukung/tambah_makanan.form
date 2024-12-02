@@ -60,7 +60,6 @@
                               <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="text_harga" alignment="0" min="-2" pref="330" max="-2" attributes="0"/>
                               <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel4" alignment="0" min="-2" pref="110" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="t_path" alignment="0" min="-2" pref="270" max="-2" attributes="0"/>
@@ -76,6 +75,7 @@
                                       <Component id="b_paht" min="-2" pref="30" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
+                              <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -130,7 +130,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="KD_Menu"/>
+            <Property name="text" type="java.lang.String" value="KD_Makanan"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
@@ -172,7 +172,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Harga Menu"/>
+            <Property name="text" type="java.lang.String" value="Harga Makanan"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="b_keluar">
@@ -196,7 +196,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Nama Menu"/>
+            <Property name="text" type="java.lang.String" value="Nama Makanan"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">

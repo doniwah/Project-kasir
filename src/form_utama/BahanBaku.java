@@ -1,6 +1,5 @@
 package form_utama;
 
-
 import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -21,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class BahanBaku extends javax.swing.JPanel {
 
+    private String buat_status = "";
     private DefaultTableModel tabModel;
     private Connection conn;
     private PreparedStatement pst;
@@ -45,28 +45,38 @@ public class BahanBaku extends javax.swing.JPanel {
     }
 
     private void tampil_barang() {
-
         Object[] baris = {"Kode Bahan", "Nama Bahan", "Jumlah Stok", "Satuan", "Harga PerSatuan", "Status Stok"};
         tabModel = new DefaultTableModel(null, baris);
         table.setModel(tabModel);
-        String sql = "select * from bahan_baku order by kd_bahan asc";
-        try {
-            Connection konek = new Config().ConfigDB();
-            Statement stat = konek.createStatement();
-            ResultSet hasil = stat.executeQuery(sql);
+        String sql = "SELECT * FROM bahan_baku ORDER BY kd_bahan ASC";
+
+        try (Connection konek = new Config().ConfigDB(); Statement stat = konek.createStatement(); ResultSet hasil = stat.executeQuery(sql)) {
+
             while (hasil.next()) {
                 String kode_bahan = hasil.getString("kd_bahan");
                 String nama_bahan = hasil.getString("nama_bahan");
-                String Stok = hasil.getString("jumlah_stok");
-                String Satuan = hasil.getString("satuan");
-                String Harga = hasil.getString("harga_bahan");
-                String Status = hasil.getString("status_stok");
-                String[] data = {kode_bahan, nama_bahan, Stok, Satuan, Harga, Status};
+                String stok = hasil.getString("jumlah_stok");
+                String satuan = hasil.getString("satuan");
+                String harga = hasil.getString("harga_bahan");
+                //String status = hasil.getString("status_stok");
+
+                // Tentukan status stok berdasarkan jumlah stok
+                int jumlahStok = Integer.parseInt(stok);
+
+                if (jumlahStok == 0) {
+                    buat_status = "Habis";
+                } else if (jumlahStok < 20) {
+                    buat_status = "Hampir Habis";
+                } else {
+                    buat_status = "Tersedia";
+                }
+
+                // Tambahkan data ke tabel model
+                String[] data = {kode_bahan, nama_bahan, stok, satuan, harga, buat_status};
                 tabModel.addRow(data);
             }
-            konek.close();
         } catch (Exception e) {
-
+            e.printStackTrace(); // Untuk debug, cetak stack trace error
         }
     }
 
@@ -137,7 +147,7 @@ public class BahanBaku extends javax.swing.JPanel {
         jLabel2.setText("BAHAN BAKU");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, -1, -1));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/batikkkk.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/batik azure.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 770));
 
         add(jPanel1, "card2");
@@ -180,7 +190,17 @@ public class BahanBaku extends javax.swing.JPanel {
                 obj[2] = rs.getString("jumlah_stok");
                 obj[3] = rs.getString("satuan");
                 obj[4] = rs.getString("harga_bahan");
-                obj[5] = rs.getString("status_stok");
+                String stok = rs.getString("jumlah_stok");
+                int jumlah_stok = Integer.parseInt(stok);
+                String status = "";
+                if (jumlah_stok == 0) {
+                    status = "Habis";
+                } else if (jumlah_stok < 20) {
+                    status = "Hampir Habis";
+                } else {
+                    status = "Tersedia";
+                }
+                obj[5] = status;
                 //obj[4] = "Rp " + String.format("%,d", rs.getInt("harga"));
 
                 tabModel.addRow(obj);

@@ -114,6 +114,8 @@ public class stok_makanan extends javax.swing.JFrame {
          public void setAnimationSpeed(int speed) {
         this.speed = speed; // Makin kecil makin cepat
     }
+    String a;
+    String b;
 
     private void TambahStok() {
         String namaMenu = text_menu.getSelectedItem().toString();
@@ -149,6 +151,9 @@ public class stok_makanan extends javax.swing.JFrame {
                 //coba.setVisible();
                 //JOptionPane.showMessageDialog(this, "Stok berhasil ditambahkan!");
                 //parentFrame.loadMenuData(); // Refresh tampilan menu
+                form_utama.FormMenu menu = new form_utama.FormMenu(a, b);
+                menu.setVisible(false);
+                menu.setVisible(true);
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Menu tidak ditemukan!");

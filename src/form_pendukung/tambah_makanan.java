@@ -177,7 +177,7 @@ public class tambah_makanan extends javax.swing.JFrame {
         jLabel4.setBackground(new java.awt.Color(164, 192, 239));
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("KD_Menu");
+        jLabel4.setText("KD_Makanan");
 
         jLabel3.setBackground(new java.awt.Color(164, 192, 239));
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 30)); // NOI18N
@@ -194,7 +194,7 @@ public class tambah_makanan extends javax.swing.JFrame {
         jLabel5.setBackground(new java.awt.Color(164, 192, 239));
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Harga Menu");
+        jLabel5.setText("Harga Makanan");
 
         b_keluar.setText("KEMBALI");
         b_keluar.addActionListener(new java.awt.event.ActionListener() {
@@ -206,7 +206,7 @@ public class tambah_makanan extends javax.swing.JFrame {
         jLabel2.setBackground(new java.awt.Color(164, 192, 239));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Nama Menu");
+        jLabel2.setText("Nama Makanan");
 
         jLabel6.setBackground(new java.awt.Color(164, 192, 239));
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
@@ -240,7 +240,6 @@ public class tambah_makanan extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(text_harga, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(panelcustom1Layout.createSequentialGroup()
                                 .addGroup(panelcustom1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(t_path, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -251,7 +250,8 @@ public class tambah_makanan extends javax.swing.JFrame {
                                         .addComponent(b_clear)
                                         .addGap(31, 31, 31)
                                         .addComponent(b_simpan))
-                                    .addComponent(b_paht, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(b_paht, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel4))))
                 .addContainerGap(48, Short.MAX_VALUE))
         );
         panelcustom1Layout.setVerticalGroup(
@@ -267,9 +267,11 @@ public class tambah_makanan extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(3, 3, 3)
                 .addComponent(text_nama, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addComponent(jLabel5)
                 .addGap(3, 3, 3)
                 .addComponent(text_harga, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addComponent(jLabel6)
                 .addGap(3, 3, 3)
                 .addGroup(panelcustom1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

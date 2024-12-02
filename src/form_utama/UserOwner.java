@@ -243,6 +243,8 @@ public class UserOwner extends javax.swing.JPanel {
         t_path.setBackground(new java.awt.Color(204, 204, 204));
         t_path.setEnabled(false);
         panel_utama.add(t_path, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 560, 230, 30));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/batik azure.png"))); // NOI18N
         panel_utama.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 770));
 
         add(panel_utama, "card2");

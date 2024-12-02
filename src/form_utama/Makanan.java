@@ -36,9 +36,11 @@ import java.awt.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.event.DocumentEvent;
 
 public class Makanan extends javax.swing.JPanel {
 
+    JPanel gridPanel = new JPanel(new GridLayout(0, 2, 10, 10));
     private Blob gambar;
 
     public Blob getGambar() {
@@ -65,7 +67,7 @@ public class Makanan extends javax.swing.JPanel {
             btn_tambah.setVisible(true);
 
             // Panel utama dengan GridLayout
-            JPanel gridPanel = new JPanel(new GridLayout(0, 2, 10, 10)); // 2 kolom, baris dinamis
+            // 2 kolom, baris dinamis
             gridPanel.setBackground(new Color(245, 245, 245));
 
             // Koneksi ke database dan ambil data
@@ -163,6 +165,79 @@ public class Makanan extends javax.swing.JPanel {
         return menuList;
     }
 
+    private void displayFilteredMenu(String keyword) {
+        // Panel utama dengan GridLayout
+        JPanel gridPanel = new JPanel(new GridLayout(0, 2, 10, 10)); // 2 kolom, baris dinamis
+        gridPanel.setBackground(new Color(245, 245, 245));
+
+        // Filter data berdasarkan keyword
+        List<MenuItem> filteredMenu = fetchMenuData().stream()
+                .filter(menu -> menu.getName().toLowerCase().contains(keyword.toLowerCase()))
+                .toList();
+
+        // Looping untuk menambahkan panel menu ke gridPanel
+        for (MenuItem menu : filteredMenu) {
+            // Panel utama untuk satu menu
+            JPanel menuPanel = new JPanel();
+            menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.X_AXIS)); // Horizontal layout
+            menuPanel.setBackground(new Color(255, 255, 255, 200)); // Warna latar
+            menuPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding luar
+
+            // Gambar menu
+            JLabel imgLabel = new JLabel();
+            if (menu.getImageBytes() != null) {
+                ImageIcon icon = new ImageIcon(menu.getImageBytes());
+                imgLabel.setIcon(new ImageIcon(icon.getImage().getScaledInstance(144, 144, Image.SCALE_SMOOTH)));
+            } else {
+                imgLabel.setText("No Image");
+                imgLabel.setHorizontalAlignment(SwingConstants.CENTER); // Gambar di tengah horizontal
+            }
+            imgLabel.setPreferredSize(new Dimension(144, 144)); // Ukuran tetap untuk gambar
+            imgLabel.setAlignmentY(Component.CENTER_ALIGNMENT); // Pastikan sejajar vertikal
+            menuPanel.add(imgLabel); // Tambahkan gambar ke menuPanel
+
+            // Panel informasi di sebelah kanan
+            JPanel infoPanel = new JPanel();
+            infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS)); // Teks vertikal
+            infoPanel.setBackground(new Color(245, 245, 245)); // Warna latar teks
+            infoPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0)); // Padding di sebelah kiri
+
+            // Informasi menu
+            JLabel nameLabel = new JLabel("<html><b>Nama menu: " + menu.getName() + "</b></html>");
+            JLabel stockLabel = new JLabel("Stok: " + menu.getStock());
+            JLabel codeLabel = new JLabel("KM: " + menu.getCode());
+            JLabel priceLabel = new JLabel("HJ: Rp. " + menu.getPrice());
+
+            // Tambahkan label ke infoPanel
+            nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+            stockLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+            codeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+            priceLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+            infoPanel.add(nameLabel);
+            infoPanel.add(Box.createVerticalStrut(5)); // Jarak antar elemen
+            infoPanel.add(stockLabel);
+            infoPanel.add(Box.createVerticalStrut(5));
+            infoPanel.add(codeLabel);
+            infoPanel.add(Box.createVerticalStrut(5));
+            infoPanel.add(priceLabel);
+
+            // Tambahkan infoPanel ke menuPanel
+            menuPanel.add(infoPanel);
+
+            // Tambahkan menuPanel ke gridPanel
+            gridPanel.add(menuPanel);
+        }
+
+        // Tambahkan gridPanel ke mainPanel
+        mainPanel.removeAll(); // Bersihkan isi mainPanel sebelumnya
+        mainPanel.setLayout(new BorderLayout());
+        JScrollPane scrollPane = new JScrollPane(gridPanel);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+        mainPanel.revalidate(); // Update tampilan
+        mainPanel.repaint();   // Refresh tampilan
+    }
+
     static class MenuItem {
 
         private final String name;
@@ -238,6 +313,7 @@ public class Makanan extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        panel = new javax.swing.JPanel();
         panel_utama = new javax.swing.JPanel();
         mainPanel = new javax.swing.JPanel();
         btn_tambah1 = new javax.swing.JButton();
@@ -251,6 +327,8 @@ public class Makanan extends javax.swing.JPanel {
 
         setMaximumSize(new java.awt.Dimension(990, 770));
         setLayout(new java.awt.CardLayout());
+
+        panel.setLayout(new java.awt.CardLayout());
 
         panel_utama.setMaximumSize(new java.awt.Dimension(990, 770));
         panel_utama.setOpaque(false);
@@ -292,6 +370,11 @@ public class Makanan extends javax.swing.JPanel {
                 btn_mkn1MouseExited(evt);
             }
         });
+        btn_mkn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_mkn1ActionPerformed(evt);
+            }
+        });
         panel_utama.add(btn_mkn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, 80, 40));
 
         btn_tambah.setBackground(new java.awt.Color(164, 192, 239));
@@ -329,14 +412,19 @@ public class Makanan extends javax.swing.JPanel {
                 btn_mnmMouseExited(evt);
             }
         });
+        btn_mnm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_mnmActionPerformed(evt);
+            }
+        });
         panel_utama.add(btn_mnm, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 210, 140, 40));
 
-        btn_mkn.setBackground(new java.awt.Color(164, 192, 239));
         btn_mkn.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        btn_mkn.setForeground(new java.awt.Color(255, 255, 255));
+        btn_mkn.setForeground(new java.awt.Color(164, 192, 239));
         btn_mkn.setText("Makanan");
         btn_mkn.setBorderPainted(false);
         btn_mkn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_mkn.setEnabled(false);
         btn_mkn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btn_mknMouseEntered(evt);
@@ -346,6 +434,17 @@ public class Makanan extends javax.swing.JPanel {
             }
         });
         panel_utama.add(btn_mkn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 140, 40));
+
+        text_cari.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                text_cariMouseEntered(evt);
+            }
+        });
+        text_cari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                text_cariKeyTyped(evt);
+            }
+        });
         panel_utama.add(text_cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, 610, 40));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 30)); // NOI18N
@@ -356,7 +455,9 @@ public class Makanan extends javax.swing.JPanel {
         bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/batik azure.png"))); // NOI18N
         panel_utama.add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(-60, -70, 1050, 840));
 
-        add(panel_utama, "card2");
+        panel.add(panel_utama, "card2");
+
+        add(panel, "card3");
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_mknMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_mknMouseEntered
@@ -427,6 +528,27 @@ public class Makanan extends javax.swing.JPanel {
         a.showSlideUp();
     }//GEN-LAST:event_btn_tambahActionPerformed
 
+    private void btn_mkn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mkn1ActionPerformed
+        String keyword = text_cari.getText().trim(); // Ambil teks dari text field
+        displayFilteredMenu(keyword);
+    }//GEN-LAST:event_btn_mkn1ActionPerformed
+
+    private void text_cariKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_text_cariKeyTyped
+
+    }//GEN-LAST:event_text_cariKeyTyped
+
+    private void text_cariMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_text_cariMouseEntered
+        String keyword = text_cari.getText().trim(); // Ambil teks dari text field
+        displayFilteredMenu(keyword);
+    }//GEN-LAST:event_text_cariMouseEntered
+
+    private void btn_mnmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mnmActionPerformed
+        panel.removeAll();
+        panel.add(new Minuman());
+        panel.repaint();
+        panel.revalidate();
+    }//GEN-LAST:event_btn_mnmActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bg;
@@ -437,6 +559,7 @@ public class Makanan extends javax.swing.JPanel {
     private javax.swing.JButton btn_tambah1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JPanel panel;
     private javax.swing.JPanel panel_utama;
     private javax.swing.JTextField text_cari;
     // End of variables declaration//GEN-END:variables

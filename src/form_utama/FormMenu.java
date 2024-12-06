@@ -1,6 +1,5 @@
 package form_utama;
 
-
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Color;
 import java.awt.Component;
@@ -53,7 +52,6 @@ public class FormMenu extends javax.swing.JFrame {
 //        a = i;
 //        n = ia;
 //    }
-
     public FormMenu(String a, String b) {
         initComponents();
         this.s_posisi = a;
@@ -149,6 +147,7 @@ public class FormMenu extends javax.swing.JFrame {
 
         btn_menu.setFont(new java.awt.Font("Segoe UI", 1, 26)); // NOI18N
         btn_menu.setForeground(new java.awt.Color(164, 192, 239));
+        btn_menu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/Menu.png"))); // NOI18N
         btn_menu.setText("Menu");
         btn_menu.setBorderPainted(false);
         btn_menu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -170,6 +169,7 @@ public class FormMenu extends javax.swing.JFrame {
         btn_bahan.setBackground(new java.awt.Color(164, 192, 239));
         btn_bahan.setFont(new java.awt.Font("Segoe UI", 1, 26)); // NOI18N
         btn_bahan.setForeground(new java.awt.Color(255, 255, 255));
+        btn_bahan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/stok.png"))); // NOI18N
         btn_bahan.setText("Bahan Baku");
         btn_bahan.setBorderPainted(false);
         btn_bahan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -191,6 +191,7 @@ public class FormMenu extends javax.swing.JFrame {
         btn_user.setBackground(new java.awt.Color(164, 192, 239));
         btn_user.setFont(new java.awt.Font("Segoe UI", 1, 26)); // NOI18N
         btn_user.setForeground(new java.awt.Color(255, 255, 255));
+        btn_user.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/user.png"))); // NOI18N
         btn_user.setText("User");
         btn_user.setBorderPainted(false);
         btn_user.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -212,6 +213,7 @@ public class FormMenu extends javax.swing.JFrame {
         btn_pembayaran.setBackground(new java.awt.Color(164, 192, 239));
         btn_pembayaran.setFont(new java.awt.Font("Segoe UI", 1, 26)); // NOI18N
         btn_pembayaran.setForeground(new java.awt.Color(255, 255, 255));
+        btn_pembayaran.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/pembayaran.png"))); // NOI18N
         btn_pembayaran.setText("Pembayaran");
         btn_pembayaran.setBorderPainted(false);
         btn_pembayaran.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -233,6 +235,7 @@ public class FormMenu extends javax.swing.JFrame {
         btn_laporan.setBackground(new java.awt.Color(164, 192, 239));
         btn_laporan.setFont(new java.awt.Font("Segoe UI", 1, 26)); // NOI18N
         btn_laporan.setForeground(new java.awt.Color(255, 255, 255));
+        btn_laporan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/laporan.png"))); // NOI18N
         btn_laporan.setText("Laporan");
         btn_laporan.setBorderPainted(false);
         btn_laporan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -349,7 +352,10 @@ public class FormMenu extends javax.swing.JFrame {
             panel_utama.add(new UserKasir());
             panel_utama.repaint();
             panel_utama.revalidate();
-
+            
+            btn_user.setBackground(new Color(255, 255, 255));
+            btn_user.setForeground(new Color(164, 192, 239));
+            
             btn_menu.setBackground(new Color(164, 192, 239));
             btn_menu.setForeground(new Color(255, 255, 255));
             btn_bahan.setBackground(new Color(1164, 192, 239));
@@ -359,15 +365,14 @@ public class FormMenu extends javax.swing.JFrame {
             btn_laporan.setBackground(new Color(164, 192, 239));
             btn_laporan.setForeground(new Color(255, 255, 255));
 
-            btn_user.setBackground(new Color(255, 255, 255));
-            btn_user.setForeground(new Color(164, 192, 239));
+
+
         }
 
 
     }//GEN-LAST:event_btn_userActionPerformed
 
     private void btn_pembayaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pembayaranActionPerformed
-
 
         Penjualan menuForm = new Penjualan(s_nama);
         panel_utama.removeAll();
@@ -395,10 +400,14 @@ public class FormMenu extends javax.swing.JFrame {
             a.setAnimationSpeed(8);
             a.showSlideUp();
         } else {
-            panel_utama.removeAll();
-            panel_utama.add(new FormLaporan());
-            panel_utama.repaint();
-            panel_utama.revalidate();
+            try {
+                panel_utama.removeAll();
+                panel_utama.add(new FormLaporan());
+                panel_utama.repaint();
+                panel_utama.revalidate();
+            } catch (Exception e) {
+            }
+
             btn_menu.setBackground(new Color(164, 192, 239));
             btn_menu.setForeground(new Color(255, 255, 255));
             btn_bahan.setBackground(new Color(164, 192, 239));

@@ -519,8 +519,6 @@ public class Minuman extends javax.swing.JPanel {
     private String b;
     private void btn_tambah1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tambah1ActionPerformed
         // TODO add your handling code here:
-        FormMenu m = new FormMenu(a, b);
-        m.dispose();
         form_pendukung.tambah_minuman a = new form_pendukung.tambah_minuman();
         a.setVisible(true);
         a.setAnimationSpeed(8);

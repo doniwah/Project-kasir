@@ -19,7 +19,7 @@ public class Config {
 
     public static Connection ConfigDB() throws SQLException {
         try {
-            String url = "jdbc:mysql://localhost:8111/db_kasir";
+            String url = "jdbc:mysql://localhost:8111/bismillah-kasir";
             String user = "root";
             String password = "";
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());

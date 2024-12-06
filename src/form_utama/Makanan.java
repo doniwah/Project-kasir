@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -30,9 +31,13 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import javax.swing.*;
 import java.awt.*;
+import java.nio.file.Files;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +45,8 @@ import javax.swing.event.DocumentEvent;
 
 public class Makanan extends javax.swing.JPanel {
 
+    Config koneksi = new Config();
+    tambah_menu pindah = new tambah_menu();
     JPanel gridPanel = new JPanel(new GridLayout(0, 2, 10, 10));
     private Blob gambar;
 
@@ -99,14 +106,12 @@ public class Makanan extends javax.swing.JPanel {
 
                 // Informasi menu
                 JLabel nameLabel = new JLabel("<html><b>Nama menu: " + menu.getName() + "</b></html>");
-                JLabel stockLabel = new JLabel("Stok: " + menu.getStock());
                 JLabel codeLabel = new JLabel("KM: " + menu.getCode());
                 JLabel priceLabel = new JLabel("HJ: Rp. " + menu.getPrice());
 
                 // Tambahkan label ke infoPanel
                 infoPanel.add(nameLabel);
                 infoPanel.add(Box.createVerticalStrut(5)); // Spasi antar elemen
-                infoPanel.add(stockLabel);
                 infoPanel.add(Box.createVerticalStrut(5));
                 infoPanel.add(codeLabel);
                 infoPanel.add(Box.createVerticalStrut(5));
@@ -136,7 +141,7 @@ public class Makanan extends javax.swing.JPanel {
 
     private static List<MenuItem> fetchMenuData() {
         List<MenuItem> menuList = new ArrayList<>();
-        String url = "jdbc:mysql://localhost:8111/db_kasir"; // Ganti dengan nama database Anda
+        String url = "jdbc:mysql://localhost:8111/bismillah-kasir"; // Ganti dengan nama database Anda
         String user = "root"; // Ganti dengan username database Anda
         String password = ""; // Ganti dengan password database Anda
 
@@ -146,15 +151,15 @@ public class Makanan extends javax.swing.JPanel {
 
             while (rs.next()) {
                 String name = rs.getString("nama_menu");
-                int stock = rs.getInt("stok_menu");
-                String code = rs.getString("kd_menu");
-                int price = rs.getInt("harga_menu");
+                //int stock = 0;
+                String code = rs.getString("id_menu");
+                int price = rs.getInt("harga");
 
                 // Ambil data gambar sebagai Blob
-                Blob blob = rs.getBlob("gbr_menu");
+                Blob blob = rs.getBlob("gambar_menu");
                 byte[] imageBytes = blob.getBytes(1, (int) blob.length()); // Konversi Blob ke byte array
 
-                menuList.add(new MenuItem(name, stock, code, price, imageBytes));
+                menuList.add(new MenuItem(name, code, price, imageBytes));
             }
 
         } catch (SQLException e) {
@@ -179,51 +184,42 @@ public class Makanan extends javax.swing.JPanel {
         for (MenuItem menu : filteredMenu) {
             // Panel utama untuk satu menu
             JPanel menuPanel = new JPanel();
-            menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.X_AXIS)); // Horizontal layout
-            menuPanel.setBackground(new Color(255, 255, 255, 200)); // Warna latar
-            menuPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding luar
+            menuPanel.setLayout(new BorderLayout(10, 0)); // Spasi horizontal antara komponen
+            menuPanel.setBackground(new Color(255, 255, 255, 200));
+            menuPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding
 
             // Gambar menu
             JLabel imgLabel = new JLabel();
             if (menu.getImageBytes() != null) {
+                // Konversi byte array menjadi ImageIcon
                 ImageIcon icon = new ImageIcon(menu.getImageBytes());
                 imgLabel.setIcon(new ImageIcon(icon.getImage().getScaledInstance(144, 144, Image.SCALE_SMOOTH)));
             } else {
                 imgLabel.setText("No Image");
-                imgLabel.setHorizontalAlignment(SwingConstants.CENTER); // Gambar di tengah horizontal
+                imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
             }
-            imgLabel.setPreferredSize(new Dimension(144, 144)); // Ukuran tetap untuk gambar
-            imgLabel.setAlignmentY(Component.CENTER_ALIGNMENT); // Pastikan sejajar vertikal
-            menuPanel.add(imgLabel); // Tambahkan gambar ke menuPanel
 
-            // Panel informasi di sebelah kanan
+            // Panel informasi di sebelah kanan gambar
             JPanel infoPanel = new JPanel();
-            infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS)); // Teks vertikal
-            infoPanel.setBackground(new Color(245, 245, 245)); // Warna latar teks
-            infoPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0)); // Padding di sebelah kiri
+            infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS)); // Tumpuk secara vertikal
+            infoPanel.setBackground(new Color(245, 245, 245));
 
             // Informasi menu
             JLabel nameLabel = new JLabel("<html><b>Nama menu: " + menu.getName() + "</b></html>");
-            JLabel stockLabel = new JLabel("Stok: " + menu.getStock());
             JLabel codeLabel = new JLabel("KM: " + menu.getCode());
             JLabel priceLabel = new JLabel("HJ: Rp. " + menu.getPrice());
 
             // Tambahkan label ke infoPanel
-            nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            stockLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            codeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            priceLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
             infoPanel.add(nameLabel);
-            infoPanel.add(Box.createVerticalStrut(5)); // Jarak antar elemen
-            infoPanel.add(stockLabel);
+            infoPanel.add(Box.createVerticalStrut(5)); // Spasi antar elemen
             infoPanel.add(Box.createVerticalStrut(5));
             infoPanel.add(codeLabel);
             infoPanel.add(Box.createVerticalStrut(5));
             infoPanel.add(priceLabel);
 
-            // Tambahkan infoPanel ke menuPanel
-            menuPanel.add(infoPanel);
+            // Tambahkan komponen ke menuPanel
+            menuPanel.add(imgLabel, BorderLayout.WEST); // Gambar di sebelah kiri
+            menuPanel.add(infoPanel, BorderLayout.CENTER); // Informasi di sebelah kanan
 
             // Tambahkan menuPanel ke gridPanel
             gridPanel.add(menuPanel);
@@ -241,14 +237,14 @@ public class Makanan extends javax.swing.JPanel {
     static class MenuItem {
 
         private final String name;
-        private final int stock;
+
         private final String code;
         private final int price;
         private final byte[] imageBytes;
 
-        public MenuItem(String name, int stock, String code, int price, byte[] imageBytes) {
+        public MenuItem(String name, String code, int price, byte[] imageBytes) {
             this.name = name;
-            this.stock = stock;
+
             this.code = code;
             this.price = price;
             this.imageBytes = imageBytes;
@@ -258,9 +254,6 @@ public class Makanan extends javax.swing.JPanel {
             return name;
         }
 
-        public int getStock() {
-            return stock;
-        }
 
         public String getCode() {
             return code;
@@ -323,6 +316,7 @@ public class Makanan extends javax.swing.JPanel {
         btn_mkn = new javax.swing.JButton();
         text_cari = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         bg = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(990, 770));
@@ -354,7 +348,7 @@ public class Makanan extends javax.swing.JPanel {
                 btn_tambah1ActionPerformed(evt);
             }
         });
-        panel_utama.add(btn_tambah1, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 210, 130, 40));
+        panel_utama.add(btn_tambah1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 210, 130, 40));
 
         btn_mkn1.setBackground(new java.awt.Color(164, 192, 239));
         btn_mkn1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -396,7 +390,7 @@ public class Makanan extends javax.swing.JPanel {
                 btn_tambahActionPerformed(evt);
             }
         });
-        panel_utama.add(btn_tambah, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 210, 130, 40));
+        panel_utama.add(btn_tambah, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 210, 130, 40));
 
         btn_mnm.setBackground(new java.awt.Color(164, 192, 239));
         btn_mnm.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -452,6 +446,14 @@ public class Makanan extends javax.swing.JPanel {
         jLabel2.setText("Menu Makanan");
         panel_utama.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
 
+        jButton1.setText("Hapus");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        panel_utama.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 220, -1, -1));
+
         bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/batik azure.png"))); // NOI18N
         panel_utama.add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(-60, -70, 1050, 840));
 
@@ -459,6 +461,379 @@ public class Makanan extends javax.swing.JPanel {
 
         add(panel, "card3");
     }// </editor-fold>//GEN-END:initComponents
+
+    public class tambah_menu extends JFrame {
+
+        JTextField txtnama = new JTextField();
+        String nama_menu;
+        JTextField txtHargaMenu = new JTextField();
+        private Timer timer;
+        private int targetY;
+        private int currentY;
+        private int currentX;
+        private int targetX;
+        private int speed = 10;
+        private File selectedFile;
+
+        // Set the frame undecorated and make it transparent
+        public tambah_menu() {
+
+            setUndecorated(true);
+            //setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+            setSize(512, 378); // Set form size
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            setLocationRelativeTo(null);// Center the window
+
+            RoundedPanel mainPanel = new RoundedPanel(20);
+            mainPanel.setBackground(new Color(164, 192, 239));
+            mainPanel.setLayout(null);
+            mainPanel.setOpaque(false);
+
+            // Title label
+            JLabel lblTitle = new JLabel("Tambah Menu");
+
+            lblTitle.setFont(
+                    new Font("Arial", Font.BOLD, 18));
+            lblTitle.setForeground(Color.WHITE);
+
+            lblTitle.setBounds(
+                    30, 20, 200, 30);
+            mainPanel.add(lblTitle);
+
+            // Kode Menu label and ComboBox
+            // Nama Menu label and ComboBox
+            JLabel lblNamaMenu = new JLabel("Nama Menu:");
+
+            lblNamaMenu.setFont(
+                    new Font("Arial", Font.PLAIN, 14));
+            lblNamaMenu.setForeground(Color.WHITE);
+
+            lblNamaMenu.setBounds(
+                    30, 120, 100, 30);
+            mainPanel.add(lblNamaMenu);
+
+            txtnama.setBounds(
+                    150, 120, 350, 30);
+            mainPanel.add(txtnama);
+
+            // Harga Menu label and TextField
+            JLabel lblHargaMenu = new JLabel("Harga Menu:");
+
+            lblHargaMenu.setFont(
+                    new Font("Arial", Font.PLAIN, 14));
+            lblHargaMenu.setForeground(Color.WHITE);
+
+            lblHargaMenu.setBounds(
+                    30, 170, 100, 30);
+            mainPanel.add(lblHargaMenu);
+
+            txtHargaMenu.setBounds(
+                    150, 170, 350, 30);
+            mainPanel.add(txtHargaMenu);
+
+            // Pilih Gambar label and TextField
+            JLabel lblPilihGambar = new JLabel("Pilih Gambar:");
+
+            lblPilihGambar.setFont(
+                    new Font("Arial", Font.PLAIN, 14));
+            lblPilihGambar.setForeground(Color.WHITE);
+
+            lblPilihGambar.setBounds(
+                    30, 220, 100, 30);
+            mainPanel.add(lblPilihGambar);
+
+            JTextField txtPilihGambar = new JTextField();
+
+            txtPilihGambar.setBounds(
+                    150, 220, 300, 30);
+            mainPanel.add(txtPilihGambar);
+
+            // File explorer button
+            JButton btnFile = new JButton(new ImageIcon("file-icon.png"));
+
+            btnFile.setBounds(
+                    470, 220, 30, 30);
+            btnFile.setBackground(
+                    new Color(240, 240, 240));
+            btnFile.setFocusPainted(
+                    false);
+            btnFile.setBorder(BorderFactory.createEmptyBorder());
+            btnFile.addActionListener(
+                    new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e
+                ) {
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setDialogTitle("Pilih Gambar");
+                    fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Gambar", "jpg", "png", "gif"));
+                    int returnValue = fileChooser.showOpenDialog(null);
+                    if (returnValue == JFileChooser.APPROVE_OPTION) {
+                        File selectedFile = fileChooser.getSelectedFile();
+                        txtPilihGambar.setText(selectedFile.getAbsolutePath());
+                    }
+                }
+            }
+            );
+            mainPanel.add(btnFile);
+
+            // Kembali button
+            JButton btnKembali = new JButton("Kembali");
+
+            btnKembali.setBounds(
+                    30, 320, 100, 35);
+            btnKembali.setBackground(Color.WHITE);
+
+            btnKembali.setForeground(Color.BLACK);
+
+            btnKembali.setFocusPainted(
+                    false);
+            btnKembali.addActionListener(
+                    new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e
+                ) {
+                    pindah.setVisible(false);
+                    System.out.println("Kembali ditekan.");
+                }
+            }
+            );
+            mainPanel.add(btnKembali);
+
+            // Clear button
+            JButton btnClear = new JButton("Clear");
+
+            btnClear.setBounds(290, 320, 100, 35);
+            btnClear.setBackground(Color.WHITE);
+
+            btnClear.setForeground(Color.BLACK);
+
+            btnClear.setFocusPainted(
+                    false);
+            btnClear.addActionListener(
+                    new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e
+                ) {
+                    txtHargaMenu.setText("");
+                    txtPilihGambar.setText("");
+                }
+            }
+            );
+            mainPanel.add(btnClear);
+
+            // Save button
+            JButton btnSimpan = new JButton("Simpan");
+
+            btnSimpan.setBounds(
+                    400, 320, 100, 35);
+            btnSimpan.setBackground(Color.WHITE);
+
+            btnSimpan.setForeground(Color.BLACK);
+
+            btnSimpan.setFocusPainted(
+                    false);
+            btnSimpan.addActionListener(
+                    new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e
+                ) {
+                     simpankedatabase();
+                    System.out.println("Menu telah disimpan.");
+                }
+            }
+            );
+            mainPanel.add(btnSimpan);
+            add(mainPanel);
+            //pack();
+        }
+
+        public void simpankedatabase() {
+            int kode;
+            nama_menu = txtnama.getText();
+            int harga_menu = Integer.parseInt(txtHargaMenu.getText());
+            String status_menu = "Habis";
+            String kategori = "Makanan";
+            try {
+
+                String queryInsert = "INSERT INTO menu "
+                        + "(id_menu, nama_menu, harga_menu, gambar_menu, kategori) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+                PreparedStatement stSimpan = koneksi.ConfigDB().prepareStatement(queryInsert);
+
+                stSimpan.setInt(1, 0);
+                stSimpan.setString(2, nama_menu);        // kd_menu
+                stSimpan.setInt(3, 0);   // nama_menu     // kd_user
+                stSimpan.setString(4, status_menu);  // nama_kasir
+                stSimpan.setString(5, null);
+                stSimpan.setString(6, kategori); // tanggal   // jumlah_beli   // kembalian
+
+                stSimpan.executeUpdate();
+                //JOptionPane.showMessageDialog(null, "Menu Berhasil ditambahkan");
+                prosesGambar(selectedFile);
+                //refresTable();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Gagal menyimpan: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+        }
+
+        private void prosesGambar(File file) {
+            try {
+                // Baca file sebagai byte array
+                byte[] imageBytes = Files.readAllBytes(file.toPath());
+
+                // Buat ImageIcon untuk preview
+                ImageIcon imageIcon = new ImageIcon(imageBytes);
+
+                // Resize gambar jika terlalu besar
+                if (imageIcon.getIconWidth() > 300) {
+                    Image image = imageIcon.getImage();
+                    Image newimg = image.getScaledInstance(300, -1, java.awt.Image.SCALE_SMOOTH);
+                    imageIcon = new ImageIcon(newimg);
+                }
+
+                // Tampilkan preview (opsional)
+//            tampilkanPreview(imageIcon);
+                // Simpan ke database
+                simpanKeDatabase(imageBytes, file.getName());
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Error memproses gambar: " + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        private void simpanKeDatabase(byte[] imageBytes, String fileName) {
+            // Gunakan try-with-resources untuk koneksi database
+            try (Connection conn = (Connection) Config.ConfigDB(); PreparedStatement pstmt = conn.prepareStatement("UPDATE menu SET gbr_menu = ? WHERE nama_menu = '" + "ss "+"'")) {
+
+                pstmt.setBytes(1, imageBytes);
+// Pastikan currentId sudah dideklarasikan
+
+                int result = pstmt.executeUpdate();
+                if (result > 0) {
+
+                    try {
+//                        this.setVisible(false);
+//                        this.dispose();
+//                        NotifTambahMenu a = new NotifTambahMenu();
+//                        a.setVisible(true);
+//                        a.setAnimationSpeed(8);
+//                        a.showSlideUp();
+                    } catch (Exception e) {
+                    }
+
+                }
+
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this,
+                        "Error menyimpan ke database: " + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        static class RoundedPanel extends JPanel {
+
+            private int cornerRadius;
+
+            public RoundedPanel(int cornerRadius) {
+                this.cornerRadius = cornerRadius;
+            }
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Dimension arcs = new Dimension(cornerRadius, cornerRadius); // Radius sudut
+                int width = getWidth();
+                int height = getHeight();
+
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                // Warna isi panel
+                g2.setColor(getBackground());
+                g2.fillRoundRect(0, 0, width, height, arcs.width, arcs.height);
+
+                // Warna border (opsional)
+                g2.setColor(Color.GRAY);
+                g2.drawRoundRect(0, 0, width - 1, height - 1, arcs.width, arcs.height);
+            }
+        }
+
+        public void showSlideUp() {
+            setupAnimation("UP");
+            setVisible(true);
+            timer.start();
+        }
+
+        private void setupAnimation(String direction) {
+            // Dapatkan ukuran layar
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+            // Posisi horizontal di tengah
+            currentX = (screenSize.width - getWidth()) / 2;
+            targetX = currentX;
+
+            switch (direction) {
+                case "UP":
+                    // Mulai dari bawah layar
+                    currentY = screenSize.height;
+                    // Target ke tengah layar
+                    targetY = (screenSize.height - getHeight()) / 2;
+                    break;
+                case "DOWN":
+                    // Mulai dari atas layar
+                    currentY = -getHeight();
+                    // Target ke tengah layar
+                    targetY = (screenSize.height - getHeight()) / 2;
+                    break;
+            }
+
+            // Set posisi awal form
+            setLocation(currentX, currentY);
+
+            // Buat timer untuk animasi
+            timer = new Timer(1, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (currentY != targetY) {
+                        // Hitung langkah perpindahan
+                        int step = Math.abs(currentY - targetY) / speed + 1;
+
+                        // Update posisi
+                        if (currentY < targetY) {
+                            currentY = Math.min(targetY, currentY + step);
+                        } else {
+                            currentY = Math.max(targetY, currentY - step);
+                        }
+
+                        // Set lokasi baru
+                        setLocation(currentX, currentY);
+
+                        // Hentikan timer jika sudah sampai target
+                        if (currentY == targetY) {
+                            timer.stop();
+                        }
+                    }
+                }
+            });
+        }
+
+        ;
+      
+      
+
+         public void setAnimationSpeed(int speed) {
+            this.speed = speed; // Makin kecil makin cepat
+        }
+
+    }
+
 
     private void btn_mknMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_mknMouseEntered
         btn_mkn.setBackground(new Color(255, 255, 255));
@@ -512,12 +887,12 @@ public class Makanan extends javax.swing.JPanel {
     private String b;
     private void btn_tambah1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tambah1ActionPerformed
         // TODO add your handling code here:
-        FormMenu m = new FormMenu(a, b);
-        m.dispose();
-        form_pendukung.tambah_makanan a = new form_pendukung.tambah_makanan();
-        a.setVisible(true);
-        a.setAnimationSpeed(8);
-        a.showSlideUp();
+//        FormMenu m = new FormMenu(a, b);
+//        m.dispose();
+
+        pindah.setVisible(true);
+        pindah.setAnimationSpeed(8);
+        pindah.showSlideUp();
     }//GEN-LAST:event_btn_tambah1ActionPerformed
 
     private void btn_tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tambahActionPerformed
@@ -549,6 +924,10 @@ public class Makanan extends javax.swing.JPanel {
         panel.revalidate();
     }//GEN-LAST:event_btn_mnmActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bg;
@@ -557,6 +936,7 @@ public class Makanan extends javax.swing.JPanel {
     private javax.swing.JButton btn_mnm;
     private javax.swing.JButton btn_tambah;
     private javax.swing.JButton btn_tambah1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel panel;

@@ -4,7 +4,11 @@ package form_utama;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Image;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -70,7 +74,6 @@ public class UserKasir extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         text_nama = new javax.swing.JTextField();
-        text_pw = new javax.swing.JTextField();
         text_alamat = new javax.swing.JTextField();
         text_gambar = new javax.swing.JLabel();
         text_edit = new javax.swing.JLabel();
@@ -83,13 +86,14 @@ public class UserKasir extends javax.swing.JPanel {
         t_path = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         t_path1 = new javax.swing.JTextField();
+        text_pw = new javax.swing.JPasswordField();
         btn_gambar1 = new javax.swing.JButton();
+        text_pw1 = new javax.swing.JPasswordField();
         text_edit1 = new javax.swing.JLabel();
         text_no1 = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         text_gambar1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        text_pw1 = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         text_alamat1 = new javax.swing.JTextField();
         text_username1 = new javax.swing.JTextField();
@@ -153,16 +157,6 @@ public class UserKasir extends javax.swing.JPanel {
             }
         });
         jPanel3.add(text_nama, new org.netbeans.lib.awtextra.AbsoluteConstraints(514, 42, 286, 32));
-
-        text_pw.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        text_pw.setEnabled(false);
-        text_pw.setMaximumSize(new java.awt.Dimension(64, 22));
-        text_pw.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                text_pwActionPerformed(evt);
-            }
-        });
-        jPanel3.add(text_pw, new org.netbeans.lib.awtextra.AbsoluteConstraints(516, 195, 284, 32));
 
         text_alamat.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         text_alamat.setEnabled(false);
@@ -243,6 +237,9 @@ public class UserKasir extends javax.swing.JPanel {
         t_path1.setEnabled(false);
         jPanel3.add(t_path1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 803, 243, 37));
 
+        text_pw.setEnabled(false);
+        jPanel3.add(text_pw, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 200, 280, 30));
+
         btn_gambar1.setText("jButton1");
         btn_gambar1.setEnabled(false);
         btn_gambar1.addActionListener(new java.awt.event.ActionListener() {
@@ -251,6 +248,9 @@ public class UserKasir extends javax.swing.JPanel {
             }
         });
         jPanel3.add(btn_gambar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(267, 803, 39, 37));
+
+        text_pw1.setEnabled(false);
+        jPanel3.add(text_pw1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 630, 280, 30));
 
         text_edit1.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         text_edit1.setForeground(new java.awt.Color(164, 192, 239));
@@ -286,16 +286,6 @@ public class UserKasir extends javax.swing.JPanel {
         jLabel6.setForeground(new java.awt.Color(164, 192, 239));
         jLabel6.setText("Password");
         jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(335, 627, -1, -1));
-
-        text_pw1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        text_pw1.setEnabled(false);
-        text_pw1.setMaximumSize(new java.awt.Dimension(64, 22));
-        text_pw1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                text_pw1ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(text_pw1, new org.netbeans.lib.awtextra.AbsoluteConstraints(508, 629, 284, 32));
 
         jLabel12.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(164, 192, 239));
@@ -348,13 +338,15 @@ public class UserKasir extends javax.swing.JPanel {
 
         jScrollPane1.setViewportView(jPanel3);
 
-        panel_utama.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 200, 870, 610));
+        panel_utama.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 200, 870, 560));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/batik azure.png"))); // NOI18N
-        panel_utama.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 810));
+        panel_utama.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, 990, 810));
 
         add(panel_utama, "card2");
     }// </editor-fold>//GEN-END:initComponents
+
+  
 
     private void Owner1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Owner1ActionPerformed
         // TODO add your handling code here:
@@ -375,10 +367,6 @@ public class UserKasir extends javax.swing.JPanel {
     private void text_namaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_namaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_text_namaActionPerformed
-
-    private void text_pwActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_pwActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_text_pwActionPerformed
 
     private void text_alamatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_alamatActionPerformed
         // TODO add your handling code here:
@@ -481,10 +469,6 @@ public class UserKasir extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_text_no1ActionPerformed
 
-    private void text_pw1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_pw1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_text_pw1ActionPerformed
-
     private void text_alamat1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_alamat1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_text_alamat1ActionPerformed
@@ -503,7 +487,7 @@ public class UserKasir extends javax.swing.JPanel {
             java.sql.Connection con = (Connection) Config.ConfigDB();
 
             PreparedStatement checkbahan = con.prepareStatement(
-                    "SELECT * FROM user where kd_user = 'KU_02'"
+                    "SELECT * FROM user where id_user = '2'"
             );
 
             ResultSet rsuser = checkbahan.executeQuery();
@@ -514,12 +498,12 @@ public class UserKasir extends javax.swing.JPanel {
                 String alamat = text_alamat.getText();
                 String password = text_pw.getText();
                 String no = text_no.getText();
-                PreparedStatement updatemenu = koneksi.ConfigDB().prepareStatement("UPDATE user SET nama = ?,"
+                PreparedStatement updatemenu = koneksi.ConfigDB().prepareStatement("UPDATE user SET nama_lengkap = ?,"
                         + "username = ?,"
                         + "alamat = ?,"
                         + "password = ?,"
                         + "phone = ?"
-                        + "WHERE kd_user = 'KU_02'");
+                        + "WHERE id_user = '2'");
                 updatemenu.setString(1, nama);
                 updatemenu.setString(2, username);
                 updatemenu.setString(3, alamat);
@@ -546,7 +530,7 @@ public class UserKasir extends javax.swing.JPanel {
             java.sql.Connection con = (Connection) Config.ConfigDB();
 
             PreparedStatement checkbahan = con.prepareStatement(
-                    "SELECT * FROM user where kd_user = 'KU_03'"
+                    "SELECT * FROM user where id_user = '3'"
             );
 
             ResultSet rsuser = checkbahan.executeQuery();
@@ -558,12 +542,12 @@ public class UserKasir extends javax.swing.JPanel {
                 String password = text_pw1.getText();
                 String no = text_no1.getText();
                 PreparedStatement updatemenu = koneksi.ConfigDB().prepareStatement("UPDATE user SET "
-                        + "nama = ?,"
+                        + "nama_lengkap = ?,"
                         + "username = ?,"
                         + "alamat = ?,"
                         + "password = ?,"
                         + "phone = ?"
-                        + "WHERE kd_user = 'KU_03'");
+                        + "WHERE id_user = '3'");
                 updatemenu.setString(1, nama);
                 updatemenu.setString(2, username);
                 updatemenu.setString(3, alamat);
@@ -653,7 +637,7 @@ public class UserKasir extends javax.swing.JPanel {
     private void simpanKeDatabase(byte[] imageBytes, String fileName) {
         // Gunakan try-with-resources untuk koneksi database
         try (
-                Connection conn = (Connection) Config.ConfigDB(); PreparedStatement pstmt = conn.prepareStatement("UPDATE user SET foto = ? WHERE kd_user = 'KU_02'")) {
+                Connection conn = (Connection) Config.ConfigDB(); PreparedStatement pstmt = conn.prepareStatement("UPDATE user SET photo = ? WHERE id_user = '2'")) {
 
             pstmt.setBytes(1, imageBytes);
 // Pastikan currentId sudah dideklarasikan
@@ -682,7 +666,7 @@ public class UserKasir extends javax.swing.JPanel {
     private void simpanKeDatabase1(byte[] imageBytes, String fileName) {
         // Gunakan try-with-resources untuk koneksi database
         try (
-                Connection conn = (Connection) Config.ConfigDB(); PreparedStatement pstmt = conn.prepareStatement("UPDATE user SET foto = ? WHERE kd_user = 'KU_03'")) {
+                Connection conn = (Connection) Config.ConfigDB(); PreparedStatement pstmt = conn.prepareStatement("UPDATE user SET photo = ? WHERE id_user = '3'")) {
 
             pstmt.setBytes(1, imageBytes);
 // Pastikan currentId sudah dideklarasikan
@@ -711,7 +695,7 @@ public class UserKasir extends javax.swing.JPanel {
 
     private void kasir1() throws IOException {
         try {
-            String query = "SELECT * FROM user where kd_user = 'KU_02'";
+            String query = "SELECT * FROM user where id_user = '2'";
             // Ganti nama_tabel dan kolom_stok sesuai dengan struktur database Anda
             java.sql.Connection con = (Connection) Config.ConfigDB();
             //java.sql.ResultSet rs = pst.executeQuery(sql);
@@ -719,7 +703,7 @@ public class UserKasir extends javax.swing.JPanel {
             ResultSet rs = stmt.executeQuery(query);
 
             if (rs.next()) {
-                String s_nama = rs.getString("nama");
+                String s_nama = rs.getString("nama_lengkap");
                 String username = rs.getString("username");
                 String alamat = rs.getString("alamat");
                 String pw = rs.getString("password");
@@ -730,7 +714,7 @@ public class UserKasir extends javax.swing.JPanel {
                 text_pw.setText(pw);
                 text_no.setText(no_telepon);
 
-                byte[] imgData = rs.getBytes("foto"); // Sesuaikan nama kolom gambar di database
+                byte[] imgData = rs.getBytes("photo"); // Sesuaikan nama kolom gambar di database
                 if (imgData != null) {
                     // Konversi data gambar menjadi ImageIcon
                     InputStream is = new ByteArrayInputStream(imgData);
@@ -753,7 +737,7 @@ public class UserKasir extends javax.swing.JPanel {
 
     private void kasir2() throws IOException {
         try {
-            String query = "SELECT * FROM user where kd_user = 'KU_03'";
+            String query = "SELECT * FROM user where id_user = '3'";
             // Ganti nama_tabel dan kolom_stok sesuai dengan struktur database Anda
             java.sql.Connection con = (Connection) Config.ConfigDB();
             //java.sql.ResultSet rs = pst.executeQuery(sql);
@@ -761,7 +745,7 @@ public class UserKasir extends javax.swing.JPanel {
             ResultSet rs = stmt.executeQuery(query);
 
             if (rs.next()) {
-                String nama = rs.getString("nama");
+                String nama = rs.getString("nama_lengkap");
                 String username = rs.getString("username");
                 String alamat = rs.getString("alamat");
                 String pw = rs.getString("password");
@@ -772,7 +756,7 @@ public class UserKasir extends javax.swing.JPanel {
                 text_pw1.setText(pw);
                 text_no1.setText(no_telepon);
 
-                byte[] imgData = rs.getBytes("foto"); // Sesuaikan nama kolom gambar di database
+                byte[] imgData = rs.getBytes("photo"); // Sesuaikan nama kolom gambar di database
                 if (imgData != null) {
                     // Konversi data gambar menjadi ImageIcon
                     InputStream is = new ByteArrayInputStream(imgData);
@@ -828,8 +812,8 @@ public class UserKasir extends javax.swing.JPanel {
     private javax.swing.JTextField text_nama1;
     private javax.swing.JTextField text_no;
     private javax.swing.JTextField text_no1;
-    private javax.swing.JTextField text_pw;
-    private javax.swing.JTextField text_pw1;
+    private javax.swing.JPasswordField text_pw;
+    private javax.swing.JPasswordField text_pw1;
     private javax.swing.JTextField text_username;
     private javax.swing.JTextField text_username1;
     // End of variables declaration//GEN-END:variables

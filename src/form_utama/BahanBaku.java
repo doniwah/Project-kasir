@@ -39,28 +39,32 @@ public class BahanBaku extends javax.swing.JPanel {
             e.printStackTrace();
         }
         SwingUtilities.invokeLater(() -> {
-            table.setVisible(true);
+            jTable1.setVisible(true);
 
         });
     }
 
     private void tampil_barang() {
+        System.out.println("masuk");
         Object[] baris = {"Kode Bahan", "Nama Bahan", "Jumlah Stok", "Satuan", "Harga PerSatuan", "Status Stok"};
         tabModel = new DefaultTableModel(null, baris);
-        table.setModel(tabModel);
-        String sql = "SELECT * FROM bahan_baku ORDER BY kd_bahan ASC";
+        jTable1.setModel(tabModel);
+        String sql = "SELECT * FROM bahan_baku ORDER BY id_bahan ASC";
 
         try (Connection konek = new Config().ConfigDB(); Statement stat = konek.createStatement(); ResultSet hasil = stat.executeQuery(sql)) {
 
+            // Tambahkan log untuk memeriksa koneksi
+            System.out.println("Koneksi berhasil");
             while (hasil.next()) {
-                String kode_bahan = hasil.getString("kd_bahan");
+                String kode_bahan = hasil.getString("id_bahan");
                 String nama_bahan = hasil.getString("nama_bahan");
-                String stok = hasil.getString("jumlah_stok");
+                String stok = hasil.getString("jumlah");
                 String satuan = hasil.getString("satuan");
-                String harga = hasil.getString("harga_bahan");
-                //String status = hasil.getString("status_stok");
+                String harga = hasil.getString("harga");
 
-                // Tentukan status stok berdasarkan jumlah stok
+                // Log setiap baris yang dibaca
+                System.out.println("Membaca baris: " + kode_bahan + ", " + nama_bahan);
+
                 int jumlahStok = Integer.parseInt(stok);
 
                 if (jumlahStok == 0) {
@@ -71,12 +75,16 @@ public class BahanBaku extends javax.swing.JPanel {
                     buat_status = "Tersedia";
                 }
 
-                // Tambahkan data ke tabel model
                 String[] data = {kode_bahan, nama_bahan, stok, satuan, harga, buat_status};
                 tabModel.addRow(data);
+                System.out.println("berhasil menambahkan baris");
             }
+
+            // Tambahkan log untuk memeriksa jumlah baris
+            System.out.println("Total baris: " + tabModel.getRowCount());
         } catch (Exception e) {
-            e.printStackTrace(); // Untuk debug, cetak stack trace error
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -90,34 +98,16 @@ public class BahanBaku extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
         text_cari = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
 
         setLayout(new java.awt.CardLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        table.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        table.setForeground(new java.awt.Color(164, 192, 239));
-        table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        table.setEnabled(false);
-        jScrollPane1.setViewportView(table);
-
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 850, 430));
 
         text_cari.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,6 +136,21 @@ public class BahanBaku extends javax.swing.JPanel {
         jLabel2.setForeground(new java.awt.Color(164, 192, 239));
         jLabel2.setText("BAHAN BAKU");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, -1, -1));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable1);
+
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 300, 850, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/batik azure.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 770));
@@ -185,12 +190,12 @@ public class BahanBaku extends javax.swing.JPanel {
             while (rs.next()) {
                 ditemukan = true;
                 Object[] obj = new Object[6];
-                obj[0] = rs.getString("kd_bahan");
+                obj[0] = rs.getString("id_bahan");
                 obj[1] = rs.getString("nama_bahan");
-                obj[2] = rs.getString("jumlah_stok");
+                obj[2] = rs.getString("jumlah");
                 obj[3] = rs.getString("satuan");
-                obj[4] = rs.getString("harga_bahan");
-                String stok = rs.getString("jumlah_stok");
+                obj[4] = rs.getString("harga");
+                String stok = rs.getString("jumlah");
                 int jumlah_stok = Integer.parseInt(stok);
                 String status = "";
                 if (jumlah_stok == 0) {
@@ -233,8 +238,8 @@ public class BahanBaku extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable table;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTextField text_cari;
     // End of variables declaration//GEN-END:variables
 }

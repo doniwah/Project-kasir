@@ -160,6 +160,7 @@ public class tambah_minuman extends javax.swing.JFrame {
         b_simpan = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         panelcustom1.setBackground(new java.awt.Color(164, 192, 239));
         panelcustom1.setRoundBottomLeft(15);
@@ -207,6 +208,11 @@ public class tambah_minuman extends javax.swing.JFrame {
         });
 
         b_clear.setText("CLEAR");
+        b_clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_clearActionPerformed(evt);
+            }
+        });
 
         b_simpan.setText("SIMPAN");
         b_simpan.addActionListener(new java.awt.event.ActionListener() {
@@ -407,6 +413,13 @@ public class tambah_minuman extends javax.swing.JFrame {
     private void b_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_simpanActionPerformed
         simpankedatabase();
     }//GEN-LAST:event_b_simpanActionPerformed
+
+    private void b_clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_clearActionPerformed
+        text_kd1.setText("");
+        text_nama.setText("");
+        text_harga.setText("");
+        t_path.setText("");
+    }//GEN-LAST:event_b_clearActionPerformed
 
     /**
      * @param args the command line arguments

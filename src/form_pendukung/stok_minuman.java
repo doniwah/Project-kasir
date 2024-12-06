@@ -198,6 +198,7 @@ public class stok_minuman extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         panelcustom1.setBackground(new java.awt.Color(164, 192, 239));
         panelcustom1.setRoundBottomLeft(10);
